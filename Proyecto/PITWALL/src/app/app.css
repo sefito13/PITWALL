@@ -1,0 +1,19 @@
+.topbar {
+	display: flex;
+	gap: 1rem;
+	background: #172b3a;
+	color: #fff;
+}
+
+.brand {
+	margin-right: auto;
+	color: inherit;
+	font-size: 1.1rem;
+	font-weight: 700;
+	text-decoration: none;
+	letter-spacing: 0.08em;
+}
+
+.page-content {
+	padding: 1.5rem;
+}

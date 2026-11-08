@@ -1,0 +1,66 @@
+s.sidenav-container,
+mat-sidenav-container,
+.mat-drawer-container {
+  background-color: #0F1115 !important;
+  min-height: 100vh !important;
+}
+
+mat-sidenav-content,
+.mat-drawer-content {
+  background-color: #0F1115 !important; 
+  flex-direction: column !important;
+}
+
+mat-sidenav-content ::ng-deep router-outlet + * {
+  display: block !important;
+  padding: 24px !important;
+  color: #FFFFFF !important;        
+  box-sizing: border-box !important;
+}
+
+mat-sidenav-content ::ng-deep router-outlet + * * {
+  color: #FFFFFF !important;
+}
+
+.sidenav {
+  background-color: #161920 !important;
+  border-right: 1px solid #2A2F3A !important;
+  width: 240px;
+}
+
+.brand-toolbar {
+  background-color: #161920 !important;
+  color: #64748B !important; 
+  font-size: 0.85rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border-bottom: 1px solid #2A2F3A;
+}
+
+mat-nav-list ::ng-deep .mat-mdc-list-item-interactive .mdc-list-item__primary-text {
+  color: #E2E8F0 !important;
+  font-weight: 500;
+  transition: color 0.15s ease-in-out;
+}
+
+mat-nav-list ::ng-deep .mat-mdc-list-item-interactive:hover .mdc-list-item__primary-text {
+  color: #22C55E !important; 
+}
+
+mat-sidenav-content > mat-toolbar {
+  background-color: #0F1115 !important;
+  border-bottom: 1px solid #2A2F3A; 
+  color: #E2E8F0 !important;
+}
+
+mat-sidenav-content > mat-toolbar button {
+  color: #E2E8F0 !important;
+}
+
+mat-sidenav-content > mat-toolbar span {
+  color: #EF4444 !important; 
+  font-weight: 900 !important;
+  font-size: 1.5rem;
+  letter-spacing: 2px;
+}
