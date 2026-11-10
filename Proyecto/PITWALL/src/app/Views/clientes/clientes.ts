@@ -9,7 +9,6 @@ import { Tabla } from '../../Componentes/tabla/tabla';
   styleUrl: './clientes.css',
 })
 export class Clientes {
-  columnas = ['id', 'nombre', 'apellido', 'edad', 'sexo', 'email', 'fecha_creacion'];
   clientes: any[] = [];
 
   constructor(public clientesService: ClientesService) {
