@@ -3,6 +3,7 @@ import { Inicio } from './Views/inicio/inicio';
 import { Productos } from './Views/productos/productos';
 import { Clientes } from './Views/clientes/clientes';
 import { Reservas } from './Views/reservas/reservas';
+import { Login } from './Views/login/login';
 
 
 export const routes: Routes = [
@@ -10,5 +11,6 @@ export const routes: Routes = [
   { path: 'inicio', component: Inicio},
   { path: 'productos', component: Productos},
   { path: 'clientes', component: Clientes},
-  { path: 'reservas', component: Reservas}
+  { path: 'reservas', component: Reservas},
+  { path: 'login', component: Login},
 ];

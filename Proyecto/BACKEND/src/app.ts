@@ -3,6 +3,7 @@ import cors from 'cors';
 
 import clientesRoutes from './routes/clientes.routes';
 import productosRoutes from './routes/productos.routes';
+import loginRoutes from './routes/login.routes';
 
 const app = express();
 
@@ -18,5 +19,5 @@ app.get('/api/v1/health', (req, res) => {
 
 app.use('/api/v1/clientes', clientesRoutes);
 app.use('/api/v1/productos', productosRoutes);
-
+app.use('/api/v1/login', loginRoutes);
 export default app;
