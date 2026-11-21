@@ -20,4 +20,3 @@ describe('Tabla', () => {
     expect(component).toBeTruthy();
   });
 });
- 

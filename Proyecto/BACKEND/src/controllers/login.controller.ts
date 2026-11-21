@@ -2,9 +2,9 @@ import { Request, Response } from 'express';
 import { LoginModel } from '../models/login.model';
 
 export const login = async (req: Request, res: Response) => {
-  const { usuario, contraseña } = req.body;
+  const { usuario, contrasena } = req.body;
 
-  const user = await LoginModel.validar(usuario, contraseña);
+  const user = await LoginModel.validar(usuario, contrasena);
 
   if (!user) {
     return res.status(401).json({

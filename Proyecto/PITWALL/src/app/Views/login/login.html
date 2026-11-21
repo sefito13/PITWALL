@@ -5,17 +5,21 @@
     <mat-card-content>
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Usuario</mat-label>
-        <input matInput type="text" />
+        <input matInput type="text" [(ngModel)]="usuario" name="usuario" />
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Contraseña</mat-label>
-        <input matInput type="password" />
+        <input matInput type="password" [(ngModel)]="contrasena" name="contrasena" />
       </mat-form-field>
+
+      <p>{{ mensaje }}</p>
     </mat-card-content>
 
     <mat-card-actions>
-      <button mat-flat-button color="primary" class="full-width">Ingresar</button>
+      <button mat-flat-button color="primary" class="full-width" (click)="ingresar()">
+        Ingresar
+      </button>
     </mat-card-actions>
   </mat-card>
 </div>

@@ -8,7 +8,6 @@ import loginRoutes from './routes/login.routes';
 const app = express();
 
 app.use(cors());
-
 app.use(express.json());
 
 app.get('/api/v1/health', (req, res) => {
@@ -20,4 +19,5 @@ app.get('/api/v1/health', (req, res) => {
 app.use('/api/v1/clientes', clientesRoutes);
 app.use('/api/v1/productos', productosRoutes);
 app.use('/api/v1/login', loginRoutes);
+
 export default app;
