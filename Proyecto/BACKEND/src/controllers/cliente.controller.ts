@@ -2,43 +2,43 @@ import { Request, Response } from 'express';
 import { ClienteModel } from '../models/clientes.model';
 
 export const obtenerClientes = async (req: Request, res: Response) => {
-  const clientes = await ClienteModel.obtenerTodos();
+  const items = await ClienteModel.obtenerTodos();
 
-  res.json(clientes);
+  res.json(items);
 };
 
 export const obtenerClientePorId = async (req: Request, res: Response) => {
   const id = Number(req.params.id);
 
-  const cliente = await ClienteModel.obtenerPorId(id);
+  const item = await ClienteModel.obtenerPorId(id);
 
-  if (!cliente) {
+  if (!item) {
     return res.status(404).json({
       message: 'Cliente no encontrado'
     });
   }
 
-  res.json(cliente);
+  res.json(item);
 };
 
 export const crearCliente = async (req: Request, res: Response) => {
-  const cliente = await ClienteModel.crear(req.body);
+  const item = await ClienteModel.crear(req.body);
 
-  res.status(201).json(cliente);
+  res.status(201).json(item);
 };
 
 export const actualizarCliente = async (req: Request, res: Response) => {
   const id = Number(req.params.id);
 
-  const cliente = await ClienteModel.actualizar(id, req.body);
+  const item = await ClienteModel.actualizar(id, req.body);
 
-  if (!cliente) {
+  if (!item) {
     return res.status(404).json({
       message: 'Cliente no encontrado'
     });
   }
 
-  res.json(cliente);
+  res.json(item);
 };
 
 export const eliminarCliente = async (req: Request, res: Response) => {

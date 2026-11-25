@@ -1,62 +1,56 @@
-import { productosDB, obtenerSiguienteId } from "../config/productos.config";
+import { pool } from '../config/db';
 
 export interface Producto {
-    id: number;
-    nombre: string;
-    descripcion: string;
-    categoria: string;
-    precio: number;
-    stock: number;
-    talla: string;
-    fecha_creacion: Date;
+  id: number;
+  nombre: string;
+  descripcion: string | null;
+  precio: number;
+  stock: number;
+  fecha_creacion: Date;
 }
+
+type DatosProducto = Omit<Producto, 'id' | 'fecha_creacion'>;
 
 export const ProductoModel = {
-    obtenerTodos: async () => {
-        return productosDB;
-    },
+  obtenerTodos: async (): Promise<Producto[]> => {
+    const { rows } = await pool.query('SELECT * FROM productos ORDER BY id');
+    return rows;
+  },
 
-    obtenerPorId: async (id: number) => {
-        return productosDB.find(producto => producto.id === id);
-    },
+  obtenerPorId: async (id: number): Promise<Producto | undefined> => {
+    const { rows } = await pool.query('SELECT * FROM productos WHERE id = $1', [id]);
+    return rows[0];
+  },
 
-    crear: async (datos: Omit<Producto, 'id' | 'fecha_creacion'>) => {
-        const nuevoProducto: Producto = {
-            id: obtenerSiguienteId(),
-            ...datos,
-            fecha_creacion: new Date()
-        };
+  crear: async (datos: DatosProducto): Promise<Producto> => {
+    const { nombre, descripcion, precio, stock } = datos;
 
-        productosDB.push(nuevoProducto);
+    const { rows } = await pool.query(
+      `INSERT INTO productos (nombre, descripcion, precio, stock)
+       VALUES ($1, $2, $3, $4)
+       RETURNING *`,
+      [nombre, descripcion ?? null, precio, stock ?? 0]
+    );
 
-        return nuevoProducto;
-    },
+    return rows[0];
+  },
 
-    actualizar: async (id: number, datos: Omit<Producto, 'id' | 'fecha_creacion'>) => {
-        const indice = productosDB.findIndex(producto => producto.id === id);
+  actualizar: async (id: number, datos: DatosProducto): Promise<Producto | null> => {
+    const { nombre, descripcion, precio, stock } = datos;
 
-        if (indice === -1) {
-            return null;
-        }
+    const { rows } = await pool.query(
+      `UPDATE productos
+       SET nombre = $1, descripcion = $2, precio = $3, stock = $4
+       WHERE id = $5
+       RETURNING *`,
+      [nombre, descripcion ?? null, precio, stock ?? 0, id]
+    );
 
-        productosDB[indice] = {
-            id,
-            ...datos,
-            fecha_creacion: productosDB[indice].fecha_creacion
-        };
+    return rows[0] ?? null;
+  },
 
-        return productosDB[indice];
-    },
-
-    eliminar: async (id: number) => {
-        const indice = productosDB.findIndex(producto => producto.id === id);
-
-        if (indice === -1) {
-            return false;
-        }
-
-        productosDB.splice(indice, 1);
-
-        return true;
-    }
-}
+  eliminar: async (id: number): Promise<boolean> => {
+    const { rowCount } = await pool.query('DELETE FROM productos WHERE id = $1', [id]);
+    return (rowCount ?? 0) > 0;
+  }
+};

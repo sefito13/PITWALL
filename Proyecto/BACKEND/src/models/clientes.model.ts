@@ -1,4 +1,4 @@
-import { clientesDB, obtenerSiguienteId } from '../config/clientes.config';
+import { pool } from '../config/db';
 
 export interface Cliente {
   id: number;
@@ -10,55 +10,48 @@ export interface Cliente {
   fecha_creacion: Date;
 }
 
+type DatosCliente = Omit<Cliente, 'id' | 'fecha_creacion'>;
+
 export const ClienteModel = {
-  obtenerTodos: async () => {
-    return clientesDB;
+  obtenerTodos: async (): Promise<Cliente[]> => {
+    const { rows } = await pool.query('SELECT * FROM clientes ORDER BY id');
+    return rows;
   },
 
-  obtenerPorId: async (id: number) => {
-    return clientesDB.find(cliente => cliente.id === id);
+  obtenerPorId: async (id: number): Promise<Cliente | undefined> => {
+    const { rows } = await pool.query('SELECT * FROM clientes WHERE id = $1', [id]);
+    return rows[0];
   },
 
-  crear: async (datos: Omit<Cliente, 'id' | 'fecha_creacion'>) => {
-    const nuevoCliente: Cliente = {
-      id: obtenerSiguienteId(),
-      ...datos,
-      fecha_creacion: new Date()
-    };
+  crear: async (datos: DatosCliente): Promise<Cliente> => {
+    const { nombre, apellido, edad, sexo, email } = datos;
 
-    clientesDB.push(nuevoCliente);
+    const { rows } = await pool.query(
+      `INSERT INTO clientes (nombre, apellido, edad, sexo, email)
+       VALUES ($1, $2, $3, $4, $5)
+       RETURNING *`,
+      [nombre, apellido, edad, sexo, email]
+    );
 
-    return nuevoCliente;
-  },
-  
-  actualizar: async (
-    id: number,
-    datos: Omit<Cliente, 'id' | 'fecha_creacion'>
-  ) => {
-    const indice = clientesDB.findIndex(cliente => cliente.id === id);
-
-    if (indice === -1) {
-      return null;
-    }
-
-    clientesDB[indice] = {
-      id,
-      ...datos,
-      fecha_creacion: clientesDB[indice].fecha_creacion
-    };
-
-    return clientesDB[indice];
+    return rows[0];
   },
 
-  eliminar: async (id: number) => {
-    const indice = clientesDB.findIndex(cliente => cliente.id === id);
+  actualizar: async (id: number, datos: DatosCliente): Promise<Cliente | null> => {
+    const { nombre, apellido, edad, sexo, email } = datos;
 
-    if (indice === -1) {
-      return false;
-    }
+    const { rows } = await pool.query(
+      `UPDATE clientes
+       SET nombre = $1, apellido = $2, edad = $3, sexo = $4, email = $5
+       WHERE id = $6
+       RETURNING *`,
+      [nombre, apellido, edad, sexo, email, id]
+    );
 
-    clientesDB.splice(indice, 1);
+    return rows[0] ?? null;
+  },
 
-    return true;
+  eliminar: async (id: number): Promise<boolean> => {
+    const { rowCount } = await pool.query('DELETE FROM clientes WHERE id = $1', [id]);
+    return (rowCount ?? 0) > 0;
   }
 };

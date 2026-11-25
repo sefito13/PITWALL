@@ -5,17 +5,30 @@
     <mat-card-content>
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Usuario</mat-label>
-        <input matInput type="text" [(ngModel)]="usuario" name="usuario" />
+        <input matInput type="text" [(ngModel)]="usuario" name="usuario" required minlength="3"
+          #usuarioCtrl="ngModel" />
+        @if (usuarioCtrl.errors?.['required']) {
+        <mat-error>El usuario es obligatorio</mat-error>
+        } @else if (usuarioCtrl.errors?.['minlength']) {
+        <mat-error>Mínimo 3 caracteres</mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Contraseña</mat-label>
-        <input matInput type="password" [(ngModel)]="contrasena" name="contrasena" />
+        <input matInput type="password" [(ngModel)]="contrasena" name="contrasena" required minlength="6"
+          #contrasenaCtrl="ngModel" />
+        @if (contrasenaCtrl.errors?.['required']) {
+        <mat-error>La contraseña es obligatoria</mat-error>
+        } @else if (contrasenaCtrl.errors?.['minlength']) {
+        <mat-error>Mínimo 6 caracteres</mat-error>
+        }
       </mat-form-field>
     </mat-card-content>
 
     <mat-card-actions>
-      <button mat-flat-button color="primary" class="full-width" (click)="ingresar()">
+      <button mat-flat-button color="primary" class="full-width" (click)="ingresar()"
+        [disabled]="usuarioCtrl.invalid || contrasenaCtrl.invalid">
         Ingresar
       </button>
     </mat-card-actions>

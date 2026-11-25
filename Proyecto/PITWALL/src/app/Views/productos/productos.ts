@@ -1,18 +1,24 @@
 import { Component } from '@angular/core';
-import { ProductosService } from '../../services/productos/productos'
+import { ProductosService } from '../../services/productos/productos';
+import { Tabla } from '../../Componentes/tabla/tabla';
 
 @Component({
-  imports: [],
   selector: 'app-productos',
-  styleUrl: './productos.css',
+  imports: [Tabla],
   templateUrl: './productos.html',
+  styleUrl: './productos.css',
 })
 export class Productos {
 
+  productos: any[] = [];
+
   constructor(public productosService: ProductosService) {
     this.productosService.getProductos().subscribe((data: any[]) => {
-      console.log(data);
+      this.productos = data;
     });
+  }
 
+  verProducto(fila: any) {
+    console.log(fila);
   }
 }
