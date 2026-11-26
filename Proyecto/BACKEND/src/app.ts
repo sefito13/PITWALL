@@ -8,12 +8,22 @@ import reservasRoutes from './routes/reservas.routes';
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      'https://pitwall-production-005508e2.up.railway.app',
+      'http://localhost:4200',
+      'http://localhost:4000',
+    ],
+    credentials: true,
+  }),
+);
+
 app.use(express.json());
 
 app.get('/api/v1/health', (req, res) => {
   res.json({
-    status: 'OK'
+    status: 'OK',
   });
 });
 
