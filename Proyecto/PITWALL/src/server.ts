@@ -12,12 +12,15 @@ const serverDistFolder = dirname(fileURLToPath(import.meta.url));
 const browserDistFolder = resolve(serverDistFolder, '../browser');
 
 const app = express();
+app.set('trust proxy', true);
+
 const angularApp = new AngularNodeAppEngine({
   allowedHosts: [
     'localhost',
     '127.0.0.1',
     'pitwall-production-005508e2.up.railway.app',
   ],
+  trustProxyHeaders: true,
 });
 
 app.use(
