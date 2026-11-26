@@ -3,18 +3,16 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
-
 export class LoginService {
+  private readonly url =
+    'https://backend-production-d4095f45.up.railway.app/api/v1/login';
 
-    private readonly url = 'http://localhost:3000/api/v1/login';
+  constructor(private http: HttpClient) {}
 
-    constructor(private http: HttpClient) {}
-
-    login(usuario: string, contrasena: string): Observable<any> {
+  login(usuario: string, contrasena: string): Observable<any> {
     const body = { usuario, contrasena };
     return this.http.post(this.url, body);
-    
-    }
+  }
 }
