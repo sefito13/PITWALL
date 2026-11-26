@@ -31,7 +31,7 @@ app.use(
   }),
 );
 
-app.use('/**', (req, res, next) => {
+app.use('/{*splat}', (req, res, next) => {
   angularApp
     .handle(req)
     .then((response) =>
